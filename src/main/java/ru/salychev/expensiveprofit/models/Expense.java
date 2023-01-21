@@ -54,7 +54,8 @@ public class Expense {
     @Column(name = "comment")
     private String comment;
 
-    public Expense(Type type, Unit unit, Currency currency, Date date, Double quantity, BigDecimal price, BigDecimal cost, String comment) {
+    public Expense(User user,Type type, Unit unit, Currency currency, Date date, Double quantity, BigDecimal price, BigDecimal cost, String comment) {
+        this.user=user;
         this.type = type;
         this.unit = unit;
         this.currency = currency;
@@ -146,5 +147,21 @@ public class Expense {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Expense{" +
+                "id=" + id +
+                ", user=" + user +
+                ", type=" + type +
+                ", unit=" + unit +
+                ", currency=" + currency +
+                ", date=" + date +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", cost=" + cost +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

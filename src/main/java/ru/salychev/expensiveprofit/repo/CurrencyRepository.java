@@ -11,6 +11,7 @@ import java.util.List;
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
     @Transactional
     List<Currency> findAllByName(String name);
+
     @Transactional
     Currency findByName(String name);
 }
