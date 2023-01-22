@@ -82,7 +82,8 @@ public class Validator {
         return null;
     }
 
-    public static Expense postValidating(Expense expense, Long currencyId, Long typeId, Long unitId,
+    public static Expense postValidating(Expense expense, Long currencyId,
+                                         Long typeId, Long unitId,
                                          CurrencyRepository currencyRepository,
                                          TypeRepository typeRepository,
                                          UnitRepository unitRepository) {

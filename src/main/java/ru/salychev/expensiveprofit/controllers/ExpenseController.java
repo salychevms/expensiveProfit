@@ -44,54 +44,6 @@ public class ExpenseController {
         if (userData.isPresent()) { //finding and checking user from request
             User user = userData.get();
             expense.setUser(user);
-
-            /*//currency
-            try {
-                if (currencyId == null) { //set default currency
-                    Currency newCurrency = currencyRepository.findByName("EUR");
-                    expense.setCurrency(newCurrency);
-                } else {
-                    Optional<Currency> newCurrency = currencyRepository.findById(currencyId);
-                    newCurrency.ifPresent(expense::setCurrency);
-                }
-                System.out.println("Set currency name: " + expense.getCurrency().getName());
-            } catch (Exception e) {
-                System.out.println("\nWrong currency: " + expense + "\nCurrency id: " + currencyId);
-                e.printStackTrace();
-            }
-
-
-            //type
-            try {
-                if (typeId == null) {
-                    Type newType = typeRepository.findByName("UNDEFINED");
-                    expense.setType(newType);
-                } else {
-                    Optional<Type> newType = typeRepository.findById(typeId);
-                    newType.ifPresent(expense::setType);
-                }
-                System.out.println("Set type name: " + expense.getType().getName());
-            } catch (Exception e) {
-                System.out.println("\nWrong type: " + expense + "\nType id: " + typeId);
-                e.printStackTrace();
-            }
-
-
-            //unit
-            try {
-                if (unitId == null) {
-                    Unit newUnit = unitRepository.findByName("UNITS");
-                    expense.setUnit(newUnit);
-                } else {
-                    Optional<Unit> newUnit = unitRepository.findById(unitId);
-                    newUnit.ifPresent(expense::setUnit);
-                }
-                System.out.println("Set unit name: " + expense.getUnit().getName());
-            } catch (Exception e) {
-                System.out.println("\nWrong unit: " + expense + "\nUnit id: " + unitId);
-                e.printStackTrace();
-            }
-*/
             try {
                 expense = Validator.postValidating(expense, currencyId, typeId, unitId,
                         currencyRepository, typeRepository, unitRepository);
