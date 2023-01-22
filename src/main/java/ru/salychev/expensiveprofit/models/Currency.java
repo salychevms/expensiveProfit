@@ -1,12 +1,8 @@
 package ru.salychev.expensiveprofit.models;
 
 import jakarta.persistence.*;
-/*
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-*/
 
-/*this model describes currency types (names)*/
+/*this model describes currencies (names)*/
 @Entity
 @Table(name = "currency")
 public class Currency {
@@ -14,7 +10,7 @@ public class Currency {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "currency_generator")
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name",nullable = false, unique = true)
     private String name;
 
     public Currency() {

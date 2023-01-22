@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.salychev.expensiveprofit.models.*;
 import ru.salychev.expensiveprofit.repo.*;
+import ru.salychev.expensiveprofit.validation.Validator;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +45,7 @@ public class ExpenseController {
             User user = userData.get();
             expense.setUser(user);
 
-
-            //currency
+            /*//currency
             try {
                 if (currencyId == null) { //set default currency
                     Currency newCurrency = currencyRepository.findByName("EUR");
@@ -54,9 +54,9 @@ public class ExpenseController {
                     Optional<Currency> newCurrency = currencyRepository.findById(currencyId);
                     newCurrency.ifPresent(expense::setCurrency);
                 }
-                System.out.println("currency name: " + expense.getCurrency().getName());
+                System.out.println("Set currency name: " + expense.getCurrency().getName());
             } catch (Exception e) {
-                System.out.println("\n1: " + expense + "\n2:" + currencyId);
+                System.out.println("\nWrong currency: " + expense + "\nCurrency id: " + currencyId);
                 e.printStackTrace();
             }
 
@@ -70,9 +70,9 @@ public class ExpenseController {
                     Optional<Type> newType = typeRepository.findById(typeId);
                     newType.ifPresent(expense::setType);
                 }
-                System.out.println("type name: " + expense.getType().getName());
+                System.out.println("Set type name: " + expense.getType().getName());
             } catch (Exception e) {
-                System.out.println("\n3: " + expense + "\n4:" + typeId);
+                System.out.println("\nWrong type: " + expense + "\nType id: " + typeId);
                 e.printStackTrace();
             }
 
@@ -86,29 +86,29 @@ public class ExpenseController {
                     Optional<Unit> newUnit = unitRepository.findById(unitId);
                     newUnit.ifPresent(expense::setUnit);
                 }
-                System.out.println("unit name: " + expense.getUnit().getName());
+                System.out.println("Set unit name: " + expense.getUnit().getName());
             } catch (Exception e) {
-                System.out.println("\n5: " + expense + "\n6: " + unitId);
+                System.out.println("\nWrong unit: " + expense + "\nUnit id: " + unitId);
                 e.printStackTrace();
             }
-
+*/
             try {
-                assert currencyId != null;
-                assert unitId != null;
-                assert typeId != null;
+                expense = Validator.postValidating(expense, currencyId, typeId, unitId,
+                        currencyRepository, typeRepository, unitRepository);
+                assert expense != null;
                 Expense expenseData = expenseRepository.save(new Expense(user,
                         expense.getType(),
                         expense.getUnit(),
                         expense.getCurrency(),
-                        new java.util.Date(),
+                        expense.getDate(),
                         expense.getQuantity(),
                         expense.getPrice(),
                         expense.getCost(),
                         expense.getComment()));
-                System.out.println("expense data is saved\n" + expenseData);
+                System.out.println("Success! Expense data is saved!\n" + expenseData);
                 return new ResponseEntity<>(expenseData, HttpStatus.CREATED);
             } catch (Exception e) {
-                System.out.println("expense is not saved\n" + expense);
+                System.out.println("Error! Expense data is not saved!\n" + expense);
                 e.printStackTrace();
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
@@ -126,7 +126,7 @@ public class ExpenseController {
         }
     }
 
-    @GetMapping("expenses/{id}")
+    @GetMapping("/expenses/{id}")
     public ResponseEntity<Expense> getExpenseById(@PathVariable("id") Long id) {
         Optional<Expense> expense = expenseRepository.findById(id);
         return expense.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
