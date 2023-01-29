@@ -9,11 +9,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "profits")
-public class Profit {
+@Table(name = "operations")
+public class Operation {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profit_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "operation_generator")
     private Long id;
+
+    @Column(name = "operation", nullable = false)
+    private String operation;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -54,11 +57,8 @@ public class Profit {
     @Column(name = "comment")
     private String comment;
 
-    public Profit() {
-
-    }
-
-    public Profit(User user, Type type, Unit unit, Currency currency, Date date, Double quantity, BigDecimal price, BigDecimal cost, String comment) {
+    public Operation(String operation, User user, Type type, Unit unit, Currency currency, Date date, Double quantity, BigDecimal price, BigDecimal cost, String comment) {
+        this.operation = operation;
         this.user = user;
         this.type = type;
         this.unit = unit;
@@ -68,6 +68,17 @@ public class Profit {
         this.price = price;
         this.cost = cost;
         this.comment = comment;
+    }
+
+    public Operation() {
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     public Long getId() {
@@ -152,8 +163,9 @@ public class Profit {
 
     @Override
     public String toString() {
-        return "Profit{" +
+        return "Operation{" +
                 "id=" + id +
+                ", operation='" + operation + '\'' +
                 ", user=" + user +
                 ", type=" + type +
                 ", unit=" + unit +
