@@ -2,7 +2,8 @@ package ru.salychev.expensiveprofit.models;
 
 import jakarta.persistence.*;
 
-/*this model describes units of measuring (kg, hour, meter and e.t.c.)*/
+/*this model describes units of measuring.
+for example: kg, hour, meter and etc.*/
 @Entity
 @Table(name = "unit")
 public class Unit {

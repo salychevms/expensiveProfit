@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.Optional;
 
+/*This class for validating the data which we're should save or update*/
 public class Validator {
     private static final String DEFAULT_TYPE = "UNDEFINED";
     private static final String DEFAULT_CURRENCY = "EUR";

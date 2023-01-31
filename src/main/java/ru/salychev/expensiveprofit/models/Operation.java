@@ -7,7 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+/*The class uses a combined data from all tables for save cases of expenses or profits */
 @Entity
 @Table(name = "operations")
 public class Operation {

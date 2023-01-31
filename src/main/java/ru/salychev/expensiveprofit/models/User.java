@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+/*The class describes user data*/
 @Entity
 @Table(name = "users")
 public class User {

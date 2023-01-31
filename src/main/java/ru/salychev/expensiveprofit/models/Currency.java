@@ -2,7 +2,8 @@ package ru.salychev.expensiveprofit.models;
 
 import jakarta.persistence.*;
 
-/*this model describes currencies (names)*/
+/*this model describes currencies (names).
+* for example: eur, rub, usd, etc.*/
 @Entity
 @Table(name = "currency")
 public class Currency {

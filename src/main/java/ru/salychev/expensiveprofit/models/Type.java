@@ -2,7 +2,8 @@ package ru.salychev.expensiveprofit.models;
 
 import jakarta.persistence.*;
 
-/*this model describes types (names) of expenses and profits*/
+/*this model describes types (kinds) of expenses and profits
+* for example: salary, taxes, food store, etc*/
 @Entity
 @Table(name = "types")
 public class Type {
