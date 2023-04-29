@@ -1,5 +1,6 @@
 package ru.salychev.expensiveprofit.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,7 @@ public class OperationController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    
     @GetMapping("/operations")
     public ResponseEntity<List<Operation>> getAllOperations(@RequestParam(required = false) String operation) {
         try {
