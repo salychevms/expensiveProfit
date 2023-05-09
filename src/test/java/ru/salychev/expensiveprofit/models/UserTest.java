@@ -2,70 +2,94 @@ package ru.salychev.expensiveprofit.models;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 class UserTest {
-
     @Test
-    void getId() {
+    public void testGetId() {
+        User user = new User();
+        user.setId(1L);
+        assertEquals(1L, user.getId());
     }
 
     @Test
-    void setId() {
+    public void testGetUsername() {
+        User user = new User();
+        user.setUsername("testUser");
+        assertEquals("testUser", user.getUsername());
     }
 
     @Test
-    void getTgId() {
+    public void testConstructorWithIdAndUsername() {
+        User user = new User("testUser", new Date());
+        Long userId = user.getId();
+        assertEquals(userId, user.getId());
+        assertEquals("testUser", user.getUsername());
     }
 
     @Test
-    void setTgId() {
+    public void testSetAndGetFirstName() {
+        User user = new User();
+        user.setFirstName("John");
+        assertEquals("John", user.getFirstName());
     }
 
     @Test
-    void getUsername() {
+    public void testSetAndGetLastName() {
+        User user = new User();
+        user.setLastName("Doe");
+        assertEquals("Doe", user.getLastName());
     }
 
     @Test
-    void setUsername() {
+    public void testSetAndGetRegistrationDate() {
+        User user = new User();
+        user.setRegistrationDate(new Date());
+        assertNotNull(user.getRegistrationDate());
     }
 
     @Test
-    void getFirstName() {
+    public void testSetAndGetEmail() {
+        User user = new User();
+        user.setEmail("test@test.com");
+        assertEquals("test@test.com", user.getEmail());
     }
 
     @Test
-    void setFirstName() {
+    public void testSetAndGetPhoneNumber() {
+        User user = new User();
+        user.setPhoneNumber("123456789");
+        assertEquals("123456789", user.getPhoneNumber());
     }
 
     @Test
-    void getLastName() {
+    public void testSetAndGetTgId() {
+        User user = new User();
+        user.setTgId("123456789");
+        assertEquals("123456789", user.getTgId());
     }
 
     @Test
-    void setLastName() {
-    }
+    public void testToString() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("testUser");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setEmail("test@test.com");
+        user.setPhoneNumber("123456789");
+        user.setRegistrationDate(new Date());
+        user.setTgId("123456789");
 
-    @Test
-    void getRegistrationDate() {
-    }
+        String expected = "User{id=1, tgId='123456789', username='testUser', firstName='John', " +
+                "lastName='Doe', registrationDate=" + user.getRegistrationDate() +
+                ", email='test@test.com', phoneNumber='123456789'}";
 
-    @Test
-    void setRegistrationDate() {
-    }
-
-    @Test
-    void getEmail() {
-    }
-
-    @Test
-    void setEmail() {
-    }
-
-    @Test
-    void getPhoneNumber() {
-    }
-
-    @Test
-    void setPhoneNumber() {
+        assertEquals(expected, user.toString());
     }
 }

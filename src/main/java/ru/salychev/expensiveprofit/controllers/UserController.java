@@ -50,7 +50,7 @@ public class UserController {
 
     /*update a user by id if new data is existed on request body and checked*/
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUserTgId(@PathVariable("id") Long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
         Optional<User> userData = userRepository.findById(id);
         if (userData.isPresent()) {
             User updateUser = userData.get();
