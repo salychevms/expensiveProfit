@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
     @Test
-    public void testGetId() {
+    public void testSetAndGetId() {
         User user = new User();
         user.setId(1L);
         assertEquals(1L, user.getId());
     }
 
     @Test
-    public void testGetUsername() {
+    public void testSetAndGetUsername() {
         User user = new User();
         user.setUsername("testUser");
         assertEquals("testUser", user.getUsername());
