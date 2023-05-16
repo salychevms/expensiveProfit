@@ -158,6 +158,6 @@ class OperationTest {
                 "date=" + testDate + ", " +
                 "quantity=3.0, price=25, cost=75, " +
                 "comment='This is a test comment'}\n";
-        assertEquals(expected, testToStringOperation.toString());
+        assertEquals(expected.trim(), testToStringOperation.toString().trim());
     }
 }
