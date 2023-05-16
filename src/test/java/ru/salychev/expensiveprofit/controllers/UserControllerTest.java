@@ -4,14 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.salychev.expensiveprofit.models.User;
 import ru.salychev.expensiveprofit.repo.UserRepository;
@@ -28,10 +25,6 @@ public class UserControllerTest {
 
     @InjectMocks
     private UserController userController;
-
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void testGetAllUsers() {
