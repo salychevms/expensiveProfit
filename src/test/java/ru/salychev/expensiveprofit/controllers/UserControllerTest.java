@@ -4,12 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import ru.salychev.expensiveprofit.models.User;
 import ru.salychev.expensiveprofit.repo.UserRepository;
 
@@ -68,7 +72,6 @@ public class UserControllerTest {
 
     @Test
     public void testUpdateUser() {
-        User existingUser = new User("testUser5", new Date());
         User updatedUser = new User("testUserForCompare", new Date());
         updatedUser.setLastName("testLastName");
         updatedUser.setFirstName("testFirstName");
@@ -76,27 +79,24 @@ public class UserControllerTest {
         updatedUser.setTgId("testTGId");
         updatedUser.setPhoneNumber("+491234567890");
 
-        when(userRepository.findById(updatedUser.getId())).thenReturn(Optional.of(existingUser));
+        when(userRepository.findById(updatedUser.getId())).thenReturn(Optional.of(updatedUser));
         when(userRepository.save(any(User.class))).thenReturn(updatedUser);
 
-        User result = userController.updateUserById(updatedUser.getId(), updatedUser).getBody();
+        ResponseEntity<User> result = userController.updateUserById(updatedUser.getId(), updatedUser);
 
-        assert result != null;
-        assertThat(result.getFirstName()).isEqualTo(updatedUser.getFirstName());
-        assertThat(result.getLastName()).isEqualTo(updatedUser.getLastName());
-        assertThat(result.getEmail()).isEqualTo(updatedUser.getEmail());
-        assertThat(result.getTgId()).isEqualTo(updatedUser.getTgId());
-        assertThat(result.getPhoneNumber()).isEqualTo(updatedUser.getPhoneNumber());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(result.getBody(), updatedUser);
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteUserById() {
         User user = new User("testUser6", new Date());
         Long userId = user.getId();
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         userController.deleteUserById(userId);
-        System.out.println("User deleted: " + user);
+
         verify(userRepository, times(1)).deleteById(userId);
         assertThat(userRepository.findById(userId)).isEmpty();
     }

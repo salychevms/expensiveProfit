@@ -4,21 +4,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.configuration.IMockitoConfiguration;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import ru.salychev.expensiveprofit.models.Currency;
-import ru.salychev.expensiveprofit.models.Operation;
 import ru.salychev.expensiveprofit.repo.CurrencyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CurrencyControllerTest {
@@ -33,11 +32,11 @@ class CurrencyControllerTest {
         Currency currency = new Currency("testCurrency");
         when(currencyRepository.save(any(Currency.class))).thenReturn(currency);
 
-        Currency result = currencyController.createCurrency(currency).getBody();
+        ResponseEntity<Currency> result = currencyController.createCurrency(currency);
 
-        assert result != null;
-        assertThat(result.getName()).isEqualTo(currency.getName());
-        assertThat(result.getId()).isEqualTo(currency.getId());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(result.getBody(), currency);
     }
 
     @Test
@@ -47,38 +46,52 @@ class CurrencyControllerTest {
         currencyList.add(new Currency("testCurrency2"));
         when(currencyRepository.findAll()).thenReturn(currencyList);
 
-        List<Currency> result = currencyController.getAllCurrency().getBody();
+        ResponseEntity<List<Currency>> result = currencyController.getAllCurrency();
 
-        assertThat(result).isEqualTo(currencyList);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(result.getBody(), currencyList);
     }
 
     @Test
-    void findById() {
+    void testFindById() {
         Currency currency = new Currency("testCurrency");
         Long id = currency.getId();
         when(currencyRepository.findById(id)).thenReturn(Optional.of(currency));
 
-        Currency result = currencyController.findById(id).getBody();
+        ResponseEntity<Currency> result = currencyController.findById(id);
 
-        assertThat(result).isEqualTo(currency);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(result.getBody(), currency);
     }
 
     @Test
     void testUpdateCurrencyById() {
-        Currency existingCurrency = new Currency("existingCurrency");
         Currency updatedCurrency = new Currency("updatedCurrency");
 
-        when(currencyRepository.findById(updatedCurrency.getId())).thenReturn(Optional.of(existingCurrency));
+        when(currencyRepository.findById(updatedCurrency.getId())).thenReturn(Optional.of(updatedCurrency));
         when(currencyRepository.save(any(Currency.class))).thenReturn(updatedCurrency);
 
-        Currency result = currencyController.updateCurrencyById(updatedCurrency.getId(), updatedCurrency).getBody();
+        ResponseEntity<Currency> result = currencyController.updateCurrencyById(updatedCurrency.getId(), updatedCurrency);
 
-        assert result != null;
-        assertThat(result.getName()).isEqualTo(updatedCurrency.getName());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(result.getBody(), updatedCurrency);
     }
 
     @Test
-    void deleteCurrencyById() {
+    void testDeleteCurrencyById() {
+        Currency currency = new Currency();
+        Long id=1L;
+        currency.setId(id);
+        when(currencyRepository.findById(id)).thenReturn(Optional.of(currency));
+
+        currencyController.deleteCurrencyById(id);
+
+        verify(currencyRepository, times(1)).deleteById(id);
+
+        assertThat(currencyRepository.findById(id)).isEmpty();
     }
 
     @Test
