@@ -83,18 +83,22 @@ class CurrencyControllerTest {
     @Test
     void testDeleteCurrencyById() {
         Currency currency = new Currency();
-        Long id=1L;
-        currency.setId(id);
-        when(currencyRepository.findById(id)).thenReturn(Optional.of(currency));
 
-        currencyController.deleteCurrencyById(id);
+        ResponseEntity<HttpStatus> response = currencyController.deleteCurrencyById(currency.getId());
 
-        verify(currencyRepository, times(1)).deleteById(id);
-
-        assertThat(currencyRepository.findById(id)).isEmpty();
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(currencyRepository, times(1)).deleteById(currency.getId());
     }
 
     @Test
-    void deleteAll() {
+    void testDeleteAll() {
+        List<Currency> currencies=new ArrayList<>();
+        currencies.add(new Currency("testCurrency1"));
+        currencies.add(new Currency("testCurrency2"));
+
+        HttpStatus result=currencyController.deleteAll().getBody();
+
+        assertEquals(HttpStatus.NO_CONTENT, result);
+        verify(currencyRepository, times(1)).deleteAll();
     }
 }
