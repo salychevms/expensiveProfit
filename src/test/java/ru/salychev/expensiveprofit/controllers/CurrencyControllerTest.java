@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +35,7 @@ class CurrencyControllerTest {
 
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(result.getBody(), currency);
+        assertEquals(currency, result.getBody());
     }
 
     @Test
@@ -50,7 +49,7 @@ class CurrencyControllerTest {
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(result.getBody(), currencyList);
+        assertEquals(currencyList, result.getBody());
     }
 
     @Test
@@ -63,21 +62,22 @@ class CurrencyControllerTest {
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(result.getBody(), currency);
+        assertEquals(currency, result.getBody());
     }
 
     @Test
     void testUpdateCurrencyById() {
-        Currency updatedCurrency = new Currency("updatedCurrency");
+        Currency updatedCurrency = new Currency("Currency");
+        Currency update = new Currency("UPDATE");
 
         when(currencyRepository.findById(updatedCurrency.getId())).thenReturn(Optional.of(updatedCurrency));
-        when(currencyRepository.save(any(Currency.class))).thenReturn(updatedCurrency);
+        when(currencyRepository.save(any(Currency.class))).thenReturn(update);
 
-        ResponseEntity<Currency> result = currencyController.updateCurrencyById(updatedCurrency.getId(), updatedCurrency);
+        ResponseEntity<Currency> result = currencyController.updateCurrencyById(updatedCurrency.getId(), update);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(result.getBody(), updatedCurrency);
+        assertEquals(update, result.getBody());
     }
 
     @Test
@@ -86,19 +86,17 @@ class CurrencyControllerTest {
 
         ResponseEntity<HttpStatus> response = currencyController.deleteCurrencyById(currency.getId());
 
+        assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(currencyRepository, times(1)).deleteById(currency.getId());
     }
 
     @Test
     void testDeleteAll() {
-        List<Currency> currencies=new ArrayList<>();
-        currencies.add(new Currency("testCurrency1"));
-        currencies.add(new Currency("testCurrency2"));
+        ResponseEntity<HttpStatus> result = currencyController.deleteAll();
 
-        HttpStatus result=currencyController.deleteAll().getBody();
-
-        assertEquals(HttpStatus.NO_CONTENT, result);
+        assertNotNull(result);
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
         verify(currencyRepository, times(1)).deleteAll();
     }
 }

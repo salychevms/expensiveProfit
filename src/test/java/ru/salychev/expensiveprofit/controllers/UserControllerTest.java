@@ -72,21 +72,22 @@ public class UserControllerTest {
 
     @Test
     public void testUpdateUser() {
-        User updatedUser = new User("testUserForCompare", new Date());
-        updatedUser.setLastName("testLastName");
-        updatedUser.setFirstName("testFirstName");
-        updatedUser.setEmail("test@email.email");
-        updatedUser.setTgId("testTGId");
-        updatedUser.setPhoneNumber("+491234567890");
+        User updatedUser=new User();
+        User update = new User("testUserForCompare", new Date());
+        update.setLastName("testLastName");
+        update.setFirstName("testFirstName");
+        update.setEmail("test@email.email");
+        update.setTgId("testTGId");
+        update.setPhoneNumber("+491234567890");
 
-        when(userRepository.findById(updatedUser.getId())).thenReturn(Optional.of(updatedUser));
-        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+        when(userRepository.findById(update.getId())).thenReturn(Optional.of(updatedUser));
+        when(userRepository.save(any(User.class))).thenReturn(update);
 
-        ResponseEntity<User> result = userController.updateUserById(updatedUser.getId(), updatedUser);
+        ResponseEntity<User> result = userController.updateUserById(updatedUser.getId(), update);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals(result.getBody(), updatedUser);
+        assertEquals(result.getBody(), update);
     }
 
     @Test
@@ -99,5 +100,13 @@ public class UserControllerTest {
 
         verify(userRepository, times(1)).deleteById(userId);
         assertThat(userRepository.findById(userId)).isEmpty();
+    }
+
+    @Test
+    public void testDeleteAll() {
+        ResponseEntity<HttpStatus> result = userController.deleteAllUsers();
+        assertNotNull(result);
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+        verify(userRepository, times(1)).deleteAll();
     }
 }
