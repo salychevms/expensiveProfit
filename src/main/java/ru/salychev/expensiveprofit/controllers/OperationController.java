@@ -119,11 +119,11 @@ public class OperationController {
     }
 
     @PutMapping("/operations/{id}/currency={currencyId}/type={typeId}/unit={unitId}")
-    public ResponseEntity<Operation> updateExpenseById(@PathVariable("id") Long id,
-                                                       @PathVariable(value = "currencyId", required = false) Long currencyId,
-                                                       @PathVariable(value = "typeId", required = false) Long typeId,
-                                                       @PathVariable(value = "unitId", required = false) Long unitId,
-                                                       @RequestBody Operation request) {
+    public ResponseEntity<Operation> updateOperationById(@PathVariable("id") Long id,
+                                                         @PathVariable(value = "currencyId", required = false) Long currencyId,
+                                                         @PathVariable(value = "typeId", required = false) Long typeId,
+                                                         @PathVariable(value = "unitId", required = false) Long unitId,
+                                                         @RequestBody Operation request) {
         Optional<Operation> operationData = operationRepository.findById(id);
         if (operationData.isPresent()) {
             Operation updatableOperation = operationData.get();
