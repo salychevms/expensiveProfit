@@ -1,16 +1,18 @@
 package ru.salychev.expensiveprofit.bot;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.salychev.expensiveprofit.botConfig.BotConfig;
+import ru.salychev.expensiveprofit.botconfig.BotConfig;
 
+@Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
-    final BotConfig config;
+    private final BotConfig config;
 
     public TelegramBot(BotConfig config) {
         this.config = config;
@@ -37,22 +39,27 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             switch (messageText) {
                 case "/start":
-                    sendMessage(chatId, "Hi"+userName+"! You activated this bot.");
+                    sendMessage(chatId, "Hi, " + userName + "! You activated this bot.");
+                    break;
+                case "/info":
+                    sendMessage(chatId, "Author: Mikhail Salychev.\nJust for fun.\nBerlin 2023");
                     break;
                 default:
                     sendMessage(chatId, "Sorry! It does not works.");
             }
         }
     }
-    private void sendMessage(long chatId, String toSend){
-        SendMessage message=new SendMessage();
-        message.setChatId(chatId);
+
+    private void sendMessage(long chatId, String toSend) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
         message.setText(toSend);
 
         try {
             execute(message);
-        }catch (TelegramApiException e){
-            throw new RuntimeException(e);
+            log.info("Reply sent");
+        } catch (TelegramApiException e) {
+            log.error(e.getMessage());
         }
     }
 }

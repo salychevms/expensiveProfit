@@ -2,13 +2,6 @@ package ru.salychev.expensiveprofit.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,6 +15,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
     @Mock
@@ -32,7 +31,7 @@ public class UserControllerTest {
 
     @Test
     public void testGetAllUsers() {
-        List<User> userList = new ArrayList<User>();
+        List<User> userList = new ArrayList<>();
         userList.add(new User("testUser1", new Date()));
         userList.add(new User("testUser2", new Date()));
 
@@ -94,7 +93,7 @@ public class UserControllerTest {
     public void testDeleteUserById() {
         User user = new User("testUser6", new Date());
         Long userId = user.getId();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        //when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         userController.deleteUserById(userId);
 
